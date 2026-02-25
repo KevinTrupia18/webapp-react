@@ -3,8 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import DefaultLayout from "./layouts/DefaultLayout";
 
-import Homepage from "./pages/HomePage";
 import MovieDetail from "./pages/MovieDetail";
+
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
