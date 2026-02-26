@@ -1,120 +1,49 @@
 
-import { useParams } from "react-router-dom";
+// src/pages/MovieDetail.jsx
 import { useState, useEffect } from "react";
-import ReviewForm from "../components/ReviewForm";
+import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useGlobal } from "../context/GlobalContext";
 
-function MovieDetail() {
+import ReviewForm from "../components/ReviewForm";
+import CardReview from "../components/CardReview.jsx";
 
+const endpoint = "http://localhost:3000/api/movies/";
+
+const MovieDetail = () => {
     const { id } = useParams();
-
+    const { setIsLoading } = useGlobal();
     const [movie, setMovie] = useState(null);
 
-    useEffect(() => {
+    const fetchMovie = () => {
+        setIsLoading(true);
+        axios.get(endpoint + id)
+            .then(res => setMovie(res.data))
+            .catch(err => console.log(err))
+            .finally(() => setIsLoading(false));
+    };
 
-        fetchMovie();
+    useEffect(fetchMovie, [id]);
 
-    }, [id]);
-
-
-    function fetchMovie() {
-
-        axios.get("http://localhost:3000/api/movies/" + id)
-
-            .then((response) => {
-
-                setMovie(response.data);
-
-            })
-
-            .catch((error) => {
-
-                console.log(error);
-
-            });
-
-    }
-
-
-
-    if (!movie) {
-
-        return <h2>Caricamento...</h2>;
-
-    }
-
+    if (!movie) return <h2>Caricamento...</h2>;
 
     return (
-
-        <div>
-
+        <>
             <h1>{movie.title}</h1>
-
-            <img
-                src={"/images/" + movie.image}
-                width="300"
-            />
-
-            <p>
-
-                <strong>Regista:</strong> {movie.director}
-
-            </p>
-
-            <p>
-
-                <strong>Genere:</strong> {movie.genre}
-
-            </p>
-
-            <p>
-
-                <strong>Anno:</strong> {movie.release_year}
-
-            </p>
-
-            <p>
-
-                {movie.abstract}
-
-            </p>
+            <img src={"/images/" + movie.image} width="300" alt={movie.title} />
+            <p><strong>Regista:</strong> {movie.director}</p>
+            <p><strong>Genere:</strong> {movie.genre}</p>
+            <p><strong>Anno:</strong> {movie.release_year}</p>
+            <p>{movie.abstract}</p>
 
             <h3>Recensioni</h3>
-
             {movie.reviews.map(review => (
-
-                <div key={review.id}>
-
-                    <p>
-
-                        <strong>{review.name}</strong>
-
-                    </p>
-
-                    <p>
-
-                        Voto: {review.vote}
-
-                    </p>
-
-                    <p>
-
-                        {review.text}
-
-                    </p>
-
-                    <hr />
-
-                </div>
-
+                <CardReview key={review.id} reviewProp={review} />
             ))}
 
-            <ReviewForm movieId={movie.id} onReviewAdded={fetchMovie} />
-
-        </div>
-
+            <ReviewForm movieId={movie.id} reloadReviews={fetchMovie} />
+        </>
     );
-
-}
+};
 
 export default MovieDetail;

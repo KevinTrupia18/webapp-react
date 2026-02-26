@@ -1,37 +1,17 @@
 
+// src/components/MovieCard.jsx
 import { Link } from "react-router-dom";
 
-function MovieCard({ id, title, image }) {
-
+const MovieCard = ({ movieProp }) => {
     return (
-
-        <div className="col-4 mb-3">
-
-            <div className="card">
-
-                <img
-                    src={image}
-                    className="card-img-top"
-                />
-
-                <div className="card-body">
-
-                    <h5>{title}</h5>
-
-                    <Link
-                        to={`/movies/${id}`}
-                        className="btn btn-primary"
-                    >
-                        Dettaglio
-                    </Link>
-
-                </div>
-
+        <div className="card mb-3">
+            <img src={"/images/" + movieProp.image} className="card-img-top" alt={movieProp.title} />
+            <div className="card-body">
+                <h5 className="card-title">{movieProp.title}</h5>
+                <Link to={`/movies/${movieProp.id}`} className="btn btn-primary">Dettaglio</Link>
             </div>
-
         </div>
-
     );
-}
+};
 
 export default MovieCard;

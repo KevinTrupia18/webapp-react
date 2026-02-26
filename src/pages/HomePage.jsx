@@ -1,57 +1,38 @@
 
-import { useEffect, useState } from "react";
+// src/pages/Homepage.jsx
+import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useGlobal } from "../context/GlobalContext";
 import MovieCard from "../components/MovieCard";
 
-function Homepage() {
+const endpoint = "http://localhost:3000/api/movies";
 
+const Homepage = () => {
+    const { setIsLoading } = useGlobal();
     const [movies, setMovies] = useState([]);
 
-    useEffect(() => {
+    const fetchMovies = () => {
+        setIsLoading(true);
+        axios.get(endpoint)
+            .then(res => setMovies(res.data))
+            .catch(err => console.log(err))
+            .finally(() => setIsLoading(false));
+    };
 
-        axios.get("http://localhost:3000/api/movies")
-
-            .then((response) => {
-
-                setMovies(response.data);
-
-            })
-
-            .catch((error) => {
-
-                console.log(error);
-
-            });
-
-    }, []);
-
+    useEffect(fetchMovies, []);
 
     return (
-
-        <div>
-
-            <h1>Lista Film</h1>
-
-            <div className="row">
-
+        <>
+            <h1 className="text-primary">Lista Film</h1>
+            <div className="row row-cols-3 mt-4">
                 {movies.map(movie => (
-
-                    <MovieCard
-                        key={movie.id}
-                        id={movie.id}
-                        title={movie.title}
-                        image={"/images/" + movie.image}
-                    />
-
+                    <div className="col" key={movie.id}>
+                        <MovieCard movieProp={movie} />
+                    </div>
                 ))}
-
             </div>
-
-        </div>
-
+        </>
     );
-
-}
+};
 
 export default Homepage;

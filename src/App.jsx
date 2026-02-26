@@ -1,29 +1,24 @@
 
+// src/App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { GlobalProvider } from "./context/GlobalContext";
 
 import DefaultLayout from "./layouts/DefaultLayout";
-
+import Homepage from "./pages/HomePage";
 import MovieDetail from "./pages/MovieDetail";
-
-import HomePage from "./pages/HomePage";
 
 function App() {
   return (
-    <BrowserRouter>
-
-      <Routes>
-
-        <Route element={<DefaultLayout />}>
-
-          <Route path="/" element={<HomePage />} />
-
-          <Route path="/movies/:id" element={<MovieDetail />} />
-
-        </Route>
-
-      </Routes>
-
-    </BrowserRouter>
+    <GlobalProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<DefaultLayout />}>
+            <Route index element={<Homepage />} />
+            <Route path="/movies/:id" element={<MovieDetail />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </GlobalProvider>
   );
 }
 

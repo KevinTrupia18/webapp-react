@@ -1,17 +1,22 @@
 
-import Header from "../components/Header";
+// src/layouts/DefaultLayout.jsx
 import { Outlet } from "react-router-dom";
+import { useGlobal } from "../context/GlobalContext";
+import Loader from "../components/Loader";
+import MainHeader from "../components/MainHeader";
 
-function DefaultLayout() {
+const DefaultLayout = () => {
+    const { isLoading } = useGlobal();
+
     return (
         <>
-            <Header />
-
-            <div className="container mt-4">
+            <MainHeader />
+            <main className="container mt-4">
                 <Outlet />
-            </div>
+            </main>
+            {isLoading && <Loader />}
         </>
     );
-}
+};
 
 export default DefaultLayout;
