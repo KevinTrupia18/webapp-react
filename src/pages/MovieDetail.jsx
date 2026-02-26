@@ -12,6 +12,13 @@ function MovieDetail() {
 
     useEffect(() => {
 
+        fetchMovie();
+
+    }, [id]);
+
+
+    function fetchMovie() {
+
         axios.get("http://localhost:3000/api/movies/" + id)
 
             .then((response) => {
@@ -26,7 +33,7 @@ function MovieDetail() {
 
             });
 
-    }, [id]);
+    }
 
 
 
@@ -102,7 +109,7 @@ function MovieDetail() {
 
             ))}
 
-            <ReviewForm movieId={movie.id} />
+            <ReviewForm movieId={movie.id} onReviewAdded={fetchMovie} />
 
         </div>
 

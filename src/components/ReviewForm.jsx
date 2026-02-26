@@ -2,7 +2,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-function ReviewForm({ movieId }) {
+function ReviewForm({ movieId, onReviewAdded }) {
 
     const [name, setName] = useState("");
     const [vote, setVote] = useState("");
@@ -24,6 +24,8 @@ function ReviewForm({ movieId }) {
                 setName("");
                 setVote("");
                 setText("");
+
+                onReviewAdded();
 
             })
             .catch(error => {
