@@ -1,7 +1,7 @@
 
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-
+import ReviewForm from "../components/ReviewForm";
 import axios from "axios";
 
 function MovieDetail() {
@@ -101,6 +101,8 @@ function MovieDetail() {
                 </div>
 
             ))}
+
+            <ReviewForm movieId={movie.id} />
 
         </div>
 
